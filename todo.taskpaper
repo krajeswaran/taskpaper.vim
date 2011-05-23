@@ -3,3 +3,4 @@ Tasks to be completed before next release
 	- Note compatibility with ToDoPaper
 	- stylesheets for tags (e.g. "fail" produces red bg)
 	- include patch for notes. @done
+        - update README and help docs with current fixes and features
