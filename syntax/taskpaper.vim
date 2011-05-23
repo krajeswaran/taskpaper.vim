@@ -38,6 +38,9 @@ HiLink taskpaperDone          NonText
 HiLink taskpaperCancelled     NonText
 HiLink taskpaperComment       Comment
 
+" hide foldmarkers for clutter free viewing
+highlight Folded ctermbg=NONE ctermfg=darkgrey cterm=NONE guibg=bg guifg=bg
+
 let b:current_syntax = "taskpaper"
 
 delcommand HiLink
