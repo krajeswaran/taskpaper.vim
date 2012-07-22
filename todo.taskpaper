@@ -1,7 +1,6 @@
 Release:
-Tasks to be completed before next release
+	Tasks to be completed before next release
 	- Note compatibility with ToDoPaper
-	- stylesheets for tags (e.g. "fail" produces red bg)
+	- stylesheets for tags (e.g. "fail" produces red bg) @done(2012-03-13)
 	- include patch for notes. @done
         - update README, file comments and help docs with current fixes and features
-        - introduce a new variable for buftype recognition(*todo*) instead of hardcoding
