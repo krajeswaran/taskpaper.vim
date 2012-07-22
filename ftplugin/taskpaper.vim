@@ -122,6 +122,8 @@ function! s:ToggleDone()
         echo "not a task."
     endif
 
+endfunction
+
 " archive @done and @cancelled tasks in current buffer to a text file
 function! s:ArchiveDoneTasks()
 

@@ -32,17 +32,18 @@ syn match taskpaperCancelled	/^.*\s@cancelled\(\(\s\|([^)]*)\).*\)\?$/
 
 syn sync fromstart
 
+call taskpaper#tag_style_dict(g:task_paper_styles)
+
 "highlighting for Taskpaper groups
 HiLink taskpaperListItem      Identifier
-HiLink taskpaperContext       Identifier
-HiLink taskpaperProject       Title
-HiLink taskpaperDone          NonText
-HiLink taskpaperCancelled     NonText
-HiLink taskpaperComment       Comment
+HiLink taskpaperContext       Type
+HiLink taskpaperProject       Todo
+HiLink taskpaperDone          Comment
+HiLink taskpaperCancelled     Comment
+HiLink taskpaperComment       Keyword
 
 " hide foldmarkers for clutter free viewing
 highlight Folded ctermbg=NONE ctermfg=darkgrey cterm=NONE guibg=bg guifg=bg
-call taskpaper#tag_style_dict(g:task_paper_styles)
 
 let b:current_syntax = "taskpaper"
 
