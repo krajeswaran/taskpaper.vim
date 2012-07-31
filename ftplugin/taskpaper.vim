@@ -73,11 +73,8 @@ function! s:ShowContext()
 endfunction
 
 function! s:ShowAll()
-
     setlocal foldmethod=syntax
-    %foldopen!
     setlocal nofoldenable
-
 endfunction  
 
 function! s:FoldProject()
@@ -169,6 +166,10 @@ endfunction
 
 " Set up mappings
 if !exists("no_plugin_maps") && !exists("no_taskpaper_maps")
+    nnoremap <silent> <buffer> <Plug>ShowAll
+    \       :<C-u>call <SID>ShowAll()<CR>
+    nnoremap <silent> <buffer> <Plug>ShowContext
+    \       :<C-u>call <SID>ShowContext()<CR>
     nnoremap <silent> <buffer> <Plug>TaskPaperFoldProjects
     \       :<C-u>call taskpaper#fold_projects()<CR>
     nnoremap <silent> <buffer> <Plug>TaskPaperFoldNotes
@@ -188,6 +189,8 @@ if !exists("no_plugin_maps") && !exists("no_taskpaper_maps")
     nnoremap <silent> <buffer> <Plug>TaskPaperPreviousProject
     \       :<C-u>call taskpaper#previous_project()<CR>
 
+    nnoremap <silent> <buffer> <Plug>ArchiveDoneTasks
+    \       :<C-u>call <SID>ArchiveDoneTasks()<CR>
     nnoremap <silent> <buffer> <Plug>TaskPaperArchiveDone
     \       :<C-u>call taskpaper#archive_done()<CR>
     nnoremap <silent> <buffer> <Plug>TaskPaperShowToday
@@ -208,6 +211,8 @@ if !exists("no_plugin_maps") && !exists("no_taskpaper_maps")
     inoremap <silent> <buffer> <Plug>TaskPaperNewline
     \       <CR><C-r>=taskpaper#newline()<CR>
 
+    nmap <buffer> <Leader>ta <Plug>ShowAll
+    nmap <buffer> <Leader>tc <Plug>ShowContext
     nmap <buffer> <Leader>tp <Plug>TaskPaperFoldProjects
     nmap <buffer> <Leader>t. <Plug>TaskPaperFoldNotes
     nmap <buffer> <Leader>tP <Plug>TaskPaperFocusProject
@@ -220,6 +225,7 @@ if !exists("no_plugin_maps") && !exists("no_taskpaper_maps")
     nmap <buffer> <Leader>tk <Plug>TaskPaperPreviousProject
 
     nmap <buffer> <Leader>tD <Plug>TaskPaperArchiveDone
+    nmap <buffer> <Leader>tz <Plug>ArchiveDoneTasks
     nmap <buffer> <Leader>tT <Plug>TaskPaperShowToday
     nmap <buffer> <Leader>tX <Plug>TaskPaperShowCancelled
     nmap <buffer> <Leader>td <Plug>TaskPaperToggleDone
