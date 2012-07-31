@@ -39,8 +39,6 @@ if !exists('g:task_paper_search_hide_done')
     let g:task_paper_search_hide_done = 0 
 endif
 
-" Tab character has special meaning on TaskPaper
-setlocal noexpandtab
 "add '@' to keyword character set so that we can complete contexts as keywords
 setlocal iskeyword+=@-@
 
