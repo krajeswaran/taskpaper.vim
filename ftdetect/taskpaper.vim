@@ -6,7 +6,7 @@
 "
 augroup taskpaper
      " more relaxed file detection requirements
-     au! BufRead,BufNewFile *todo*  setfiletype taskpaper
+     au! BufRead,BufNewFile *todo.*  setfiletype taskpaper
      " Respect user's tab settings
      "au FileType taskpaper setlocal noexpandtab
 augroup END

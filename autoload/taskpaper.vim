@@ -465,23 +465,13 @@ function! taskpaper#focus_project()
 
     normal! $
     let begin = taskpaper#previous_project()
-    if begin == 0
-        call setpos('.', pos)
-        return
-    endif
+    let end = taskpaper#next_project()
 
-    let end = taskpaper#search_end_of_item(begin, 'n')
-
-    " Go to the top level project
-    while taskpaper#previous_project()
-        if getline('.') =~ '^[^\t]'
-            break
-        endif
-    endwhile
-
-    setlocal foldexpr=taskpaper#fold_except_range(v:lnum,begin,end)
+    setlocal foldexpr=taskpaper#fold_except_range(v:lnum,begin,end-1)
     setlocal foldminlines=0 foldtext=''
     setlocal foldmethod=expr foldlevel=0 foldenable
+
+    call setpos('.', pos)
 endfunction
 
 function! taskpaper#search_tag(...)

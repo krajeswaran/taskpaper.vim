@@ -215,7 +215,7 @@ if !exists("no_plugin_maps") && !exists("no_taskpaper_maps")
     nmap <buffer> <Leader>tc <Plug>ShowContext
     nmap <buffer> <Leader>tp <Plug>TaskPaperFoldProjects
     nmap <buffer> <Leader>t. <Plug>TaskPaperFoldNotes
-    nmap <buffer> <Leader>tP <Plug>TaskPaperFocusProject
+    nmap <buffer> <Leader>tf <Plug>TaskPaperFocusProject
 
     nmap <buffer> <Leader>t/ <Plug>TaskPaperSearchKeyword
     nmap <buffer> <Leader>ts <Plug>TaskPaperSearchTag
