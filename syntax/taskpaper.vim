@@ -29,6 +29,7 @@ syn match taskpaperListItem	/^\s*-\s\+/
 syn match taskpaperContext	/\s\zs@[^ \t(]\+\(([^)]*)\)\?/
 syn match taskpaperDone		/^.*\s@done\(\(\s\|([^)]*)\).*\)\?$/
 syn match taskpaperCancelled	/^.*\s@cancelled\(\(\s\|([^)]*)\).*\)\?$/
+syn match taskpaperWaitOn	/^.*\s@waiton\(\(\s\|([^)]*)\).*\)\?$/
 
 syn sync fromstart
 
@@ -40,6 +41,7 @@ HiLink taskpaperContext       Type
 HiLink taskpaperProject       Todo
 HiLink taskpaperDone          Comment
 HiLink taskpaperCancelled     Comment
+HiLink taskpaperWaitOn        Comment
 HiLink taskpaperComment       Keyword
 
 " hide foldmarkers for clutter free viewing

@@ -348,60 +348,6 @@ function! taskpaper#update_project()
     call taskpaper#update_tag('project', join(reverse(projects), ' / '))
 endfunction
 
-function! taskpaper#archive_done()
-    let archive_start = search('^' . g:task_paper_archive_project . ':', 'cw')
-    if archive_start == 0
-        call append('$', g:task_paper_archive_project . ':')
-        let archive_start = line('$')
-        let archive_end = 0
-    else
-        let archive_end = search('^\S\+:', 'W')
-    endif
-
-    let save_fen = &l:foldenable
-    let save_reg = [getreg('a'), getregtype('a')]
-    setlocal nofoldenable
-    call setreg('a', '')
-
-    call cursor(1, 1)
-    let deleted = 0
-
-    while 1
-        let lnum = search('@done', 'W', archive_start - deleted)
-        if lnum == 0
-            break
-        endif
-
-        call taskpaper#update_project()
-        let deleted += taskpaper#delete(lnum, 'A', 1)
-    endwhile
-
-    if archive_end != 0
-        call cursor(archive_end, 1)
-
-        while 1
-            let lnum = search('@done', 'W')
-            if lnum == 0
-                break
-            endif
-
-            call taskpaper#update_project()
-            let deleted += taskpaper#delete(lnum, 'A', 1)
-        endwhile
-    endif
-
-    if deleted != 0
-        call taskpaper#put([g:task_paper_archive_project], 'a', 1)
-    else
-        echo 'No done items.'
-    endif
-
-    let &l:foldenable = save_fen
-    call setreg('a', save_reg[0], save_reg[1])
-
-    return deleted
-endfunction
-
 function! taskpaper#fold(lnum, pat, ipat)
     let line = getline(a:lnum)
     let level = foldlevel(a:lnum)
@@ -465,23 +411,20 @@ function! taskpaper#focus_project()
 
     normal! $
     let begin = taskpaper#previous_project()
-    if begin == 0
-        call setpos('.', pos)
-        return
-    endif
-
-    let end = taskpaper#search_end_of_item(begin, 'n')
+    let end = taskpaper#next_project()
 
     " Go to the top level project
-    while taskpaper#previous_project()
-        if getline('.') =~ '^[^\t]'
-            break
-        endif
-    endwhile
+    " while taskpaper#previous_project()
+    "     if getline('.') =~ '^[^\t]'
+    "         break
+    "     endif
+    " endwhile
 
-    setlocal foldexpr=taskpaper#fold_except_range(v:lnum,begin,end)
+    setlocal foldexpr=taskpaper#fold_except_range(v:lnum,begin,end-1)
     setlocal foldminlines=0 foldtext=''
     setlocal foldmethod=expr foldlevel=0 foldenable
+
+    call setpos('.', pos)
 endfunction
 
 function! taskpaper#search_tag(...)
@@ -556,6 +499,55 @@ function! taskpaper#tag_style_dict(tsd)
     for tag_name in keys(a:tsd)
         call taskpaper#tag_style(tag_name,a:tsd[tag_name])
     endfor
+endfunction
+
+function! taskpaper#wait_for()
+    let res = input('Wait for: ', '', 'customlist,taskpaper#complete_project')
+    call taskpaper#toggle_tag('waiton', res)
+endfunction
+
+" archive @done and @cancelled tasks in current buffer to a text file
+function! taskpaper#move_to_archive()
+
+    let l:current_buffer = getline(1, "$")
+ 
+    if empty(l:current_buffer)
+       echo "need task(s) in current buffer to archive."
+       return
+    endif
+ 
+    " read the existing archive file into a buffer
+    let l:archive_buffer = readfile(g:task_paper_archive_file)
+ 
+    let l:index = 1
+    let l:found_done_tasks = 0
+
+    " find done/cancelled tasks in current buffer
+    while (l:index <= len(l:current_buffer))
+       let l:line = get(l:current_buffer, l:index)
+ 
+       if l:line =~ '^\s*- '
+          if l:line =~ '@[Cc]ancelled\|@[Dd]one'
+             call remove(l:current_buffer, l:index)
+             call insert(l:archive_buffer, l:line)
+             let l:found_done_tasks = 1
+             continue
+          endif
+       endif
+ 
+       let l:index = l:index + 1
+    endwhile
+ 
+    if l:found_done_tasks
+       " write found done tasks to archive file
+       call writefile(l:archive_buffer, g:task_paper_archive_file)
+
+       " refresh current buffer
+       %delete
+       call append(0, l:current_buffer)
+    else
+       echo "no tasks found in done/cancelled status"
+    endif
 endfunction
 
 let &cpo = s:save_cpo
